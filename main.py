@@ -25,6 +25,8 @@ def main():
     # accu_pool = load_data("BONUS_EVENT_ACCU_POOL_CONF")
     nightmare_map = load_data("NPC_REFRESH_CONTENT_CONF")["RocoDataRows"]
     unit_type_map = load_data("TYPE_DICTIONARY")["RocoDataRows"]
+    camp_map = load_data("CAMP_CONF")["RocoDataRows"]
+
     event_pool = load_data("BONUS_EVENT_POOL_CONF")
     petbase = load_data("PETBASE_CONF")
 
@@ -53,6 +55,15 @@ def main():
         nightmare_pet = nightmare_map[str(bonus_param)]
 
         bonus_event["nightmare"] = nightmare_pet["editor_name"][0]
+        bonus_event["nightmare_type"] = nightmare_pet["editor_name"][2]
+
+        if "camp_id" in bonus_event:
+            bonus_event["camps"] = ",".join(
+                map(
+                    lambda id_: camp_map[str(id_)]["camp_name"],
+                    bonus_event["camp_id"],
+                )
+            )
 
         if "petbase_field_param" in bonus_event:
             field_param = bonus_event["petbase_field_param"]
@@ -66,7 +77,12 @@ def main():
         else:
             bonus_event["condition"] = "随意捕获"
 
-        for field in ["bonus_param", "petbase_field", "petbase_field_param"]:
+        for field in [
+            "bonus_param",
+            "petbase_field",
+            "petbase_field_param",
+            "camp_id",
+        ]:
             bonus_event.pop(field, None)
 
     clean(bonus_events).with_columns(
