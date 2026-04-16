@@ -69,7 +69,7 @@ def main():
             field_param = bonus_event["petbase_field_param"]
             match bonus_event["petbase_field"]:
                 case "unit_type":
-                    condition = f"{unit_type_map[field_param[0]]['type_name']}混抓"
+                    condition = f"{unit_type_map[field_param[0]]['type_name']}捕获"
                 case "pet_evolution_id":
                     evo_key = tuple(map(int, field_param))
                     condition = f"进化链-{evo_map.get(evo_key, '未知')}"
