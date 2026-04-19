@@ -87,8 +87,10 @@ def main():
 
     clean(bonus_events).with_columns(
         pl.col("is_rare").fill_null(False),
+        pl.col("petbase_need_persent").fill_null(0),
     ).sort(
         [
+            pl.col("petbase_need_persent").mul(-1),
             pl.col("condition"),
             pl.col("weight").mul(-1),
             pl.col("accumulate_type"),
