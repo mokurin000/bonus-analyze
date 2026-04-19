@@ -47,7 +47,9 @@ def main():
             continue
         key = tuple(pet["pet_evolution_id"])
         if key not in evo_map:
-            evo_map[key] = pet["name"]
+            evo_map[key] = (
+                f"{pet['name']}_{pet['form']}" if "form" in pet else pet["name"]
+            )
 
     bonus_event: dict
     for bonus_event in bonus_events:
@@ -94,6 +96,8 @@ def main():
             pl.col("condition"),
             pl.col("weight").mul(-1),
             pl.col("accumulate_type"),
+            pl.col("nightmare_type"),
+            pl.col("nightmare"),
         ]
     ).write_excel(
         "bonus_events.xlsx",
